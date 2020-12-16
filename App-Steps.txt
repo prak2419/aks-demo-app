@@ -1,0 +1,77 @@
+###########################
+Set up a temp env variable
+###########################
+
+$env:DBConnectionString = '<DBConnectionString>'
+
+######################
+Build Migration:
+######################
+
+dotnet ef migrations add InitialCreate --project Sessions.Migrations
+
+########################
+Update database:
+########################
+
+dotnet ef database update --project Sessions.Migrations
+
+######################
+Build docker images
+######################
+
+cd Docker
+
+docker build -t prakaz2acr.azurecr.io sessions:latest -f sessions-ms.Dockerfile .
+
+docker build -t prakaz2acr.azurecr.io/votings:latest -f votings-ms.Dockerfile .
+
+docker build -t prakaz2acr.azurecr.io/s:latest -f auditlog-cleaner.Dockerfile .
+
+cd ../frontend
+
+docker build -t prakaz2acr.azurecr.io/frontend:latest .
+
+######################
+Login to ACR
+######################
+
+az acr login --name prakaz2acr.azurecr.io
+
+###################
+Docker push images
+###################
+
+docker push prakaz2acr.azurecr.io/sessions:latest
+
+docker push prakaz2acr.azurecr.io/votings:latest
+
+docker push prakaz2acr.azurecr.io/sessions-cleaner:latest
+
+######################
+Prepare SQL CS
+######################
+
+echo -n 'connection string' | base64 -w 0
+
+######################
+Deploy templates
+######################
+
+1. Update Connection sting in secrets.yaml
+
+2. update ACR values in frontend.yaml, backend.yaml files
+
+3. Deploy to AKS
+
+kubectl apply -f secrets.yaml
+
+kubectl apply -f backend.yaml
+
+kubectl apply -f frontend.yaml
+
+kubectl apply -f services.yaml
+
+
+
+
