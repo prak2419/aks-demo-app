@@ -62,7 +62,7 @@ Replace `thhdemo` with your ACR instance identifier
 ```
 $ az acr login --name thhdemo
 $ docker push thhdemo.azurecr.io/sessions:latest
-$ docker push thhdemo.azurecr.io/votings-api:latest
+$ docker push thhdemo.azurecr.io/votings:latest
 $ docker push thhdemo.azurecr.io/sessions-cleaner:latest
 $ docker push thhdemo.azurecr.io/frontend:latest
 ```
