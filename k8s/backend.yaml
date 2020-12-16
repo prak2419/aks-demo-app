@@ -16,13 +16,8 @@ spec:
     spec:
       containers:
         - name: sesssions-microservice
-          image: thhdemo.azurecr.io/sessions-ms:latest
+          image: thhdemo.azurecr.io/sessions:latest
           env:
-            - name: APPINSIGHTS_INSTRUMENTATIONKEY
-              valueFrom:
-                secretKeyRef:
-                  name: backendsecret
-                  key: ai_key
             - name: ASPNETCORE_URLS
               value: http://*:8080
             - name: DbConnectionString
@@ -75,13 +70,8 @@ spec:
         - name: acr-auth
       containers:
         - name: votings-microservice
-          image: thhdemo.azurecr.io/votings-ms:latest
+          image: thhdemo.azurecr.io/votings:latest
           env:
-            - name: APPINSIGHTS_INSTRUMENTATIONKEY
-              valueFrom:
-                secretKeyRef:
-                  name: backendsecret
-                  key: ai_key
             - name: ASPNETCORE_URLS
               value: http://*:8080
             - name: DbConnectionString
